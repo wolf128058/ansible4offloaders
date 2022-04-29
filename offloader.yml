@@ -1,4 +1,13 @@
 ---
+- name: SSH Pubkey-Drop
+  hosts: offloader
+  tags:
+    - ssh
+    - sshd
+    - ssh-keys
+  roles:
+    - ssh-authorized-keys
+
 # PREPARE: BECOME A SUDOER FIRST!
 - name: Auxiliary Tools
   hosts: offloader
