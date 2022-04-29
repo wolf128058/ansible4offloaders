@@ -9,7 +9,7 @@
     - ssh-authorized-keys
 
 # PREPARE: BECOME A SUDOER FIRST!
-- name: Auxiliary Tools
+- name: Install Auxiliary Tools
   hosts: offloader
   tags:
     - tools
@@ -31,3 +31,11 @@
     - wireguard
   roles:
     - wg-ffmuc
+
+- name: Install vxlan
+  hosts: offloader
+  tags:
+    - vxlan
+  roles:
+    - vxlan-ffmuc
+

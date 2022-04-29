@@ -10,3 +10,6 @@
 [submodule "roles/wg-ffmuc"]
 	path = roles/wg-ffmuc
 	url = git@github.com:wolf128058/role_ffoff-wg4ffmuc.git
+[submodule "roles/vxlan-ffmuc"]
+	path = roles/vxlan-ffmuc
+	url = git@github.com:wolf128058/role_ffoff-vxlan4ffmuc.git
