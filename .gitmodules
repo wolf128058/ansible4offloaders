@@ -1,0 +1,3 @@
+[submodule "roles/cli-tools"]
+	path = roles/cli-tools
+	url = git@github.com:wolf128058/role_ffoff-clitools.git
