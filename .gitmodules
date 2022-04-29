@@ -4,3 +4,6 @@
 [submodule "roles/ssh-pubkeys"]
 	path = roles/ssh-authorized-keys
 	url = git@github.com:wolf128058/role_ffoff-pubkeydrop-singleuser
+[submodule "roles/docker-unifi"]
+	path = roles/docker-unifi
+	url = git@github.com:wolf128058/role_ffoff-unifi-controller-docker.git
