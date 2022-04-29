@@ -1,2 +1,2 @@
-# ansible4offloaders
-Freifunk-Offloaders Installed by Ansible-Roles
+# Ansible for Offloaders
+Freifunk-Offloaders installed by Ansible-Roles
