@@ -1,0 +1,8 @@
+---
+# PREPARE: BECOME A SUDOER FIRST!
+- name: Auxiliary Tools
+  hosts: offloader
+  tags:
+    - tools
+  roles:
+    - tools-install
