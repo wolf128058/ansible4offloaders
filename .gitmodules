@@ -7,3 +7,6 @@
 [submodule "roles/docker-unifi"]
 	path = roles/docker-unifi
 	url = git@github.com:wolf128058/role_ffoff-unifi-controller-docker.git
+[submodule "roles/wg-ffmuc"]
+	path = roles/wg-ffmuc
+	url = git@github.com:wolf128058/role_ffoff-wg4ffmuc.git

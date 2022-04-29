@@ -24,3 +24,10 @@
     - unifi
   roles:
     - docker-unifi
+
+- name: Install WireGuard and connect to FFMUC
+  hosts: offloader
+  tags:
+    - wireguard
+  roles:
+    - wg-ffmuc
