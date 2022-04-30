@@ -13,3 +13,6 @@
 [submodule "roles/vxlan-ffmuc"]
 	path = roles/vxlan-ffmuc
 	url = git@github.com:wolf128058/role_ffoff-vxlan4ffmuc.git
+[submodule "roles/respondd"]
+	path = roles/respondd
+	url = git@github.com:wolf128058/role_ffoff-respondd.git

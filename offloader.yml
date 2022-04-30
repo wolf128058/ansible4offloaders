@@ -39,3 +39,11 @@
   roles:
     - vxlan-ffmuc
 
+- name: Install Ext-Respondd
+  hosts: offloader
+  tags:
+    - ext-respondd
+    - respondd
+  roles:
+    - respondd
+
