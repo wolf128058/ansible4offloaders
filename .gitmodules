@@ -16,3 +16,6 @@
 [submodule "roles/respondd"]
 	path = roles/respondd
 	url = git@github.com:wolf128058/role_ffoff-respondd.git
+[submodule "roles/batman"]
+	path = roles/batman
+	url = git@github.com:wolf128058/role_ffoff-batman.git

@@ -25,6 +25,13 @@
   roles:
     - docker-unifi
 
+- name: install and configure batman
+  hosts: offloader
+  tags:
+    - batman
+  roles:
+    - batman
+
 - name: Install WireGuard and connect to FFMUC
   hosts: offloader
   tags:
