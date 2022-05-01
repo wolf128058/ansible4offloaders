@@ -1,0 +1,22 @@
+respondd_router_name: "Beispieloffloader42"
+respondd_router_contact: "@Chrysocyon42"
+respondd_lat: "47.70418552538023"
+respondd_long: "9.199819697851138"
+dnsmasq_enabled: true
+dnsmasq_interface: enp2s0
+dnsmasq_dhcp_range: "enp2s0,172.16.0.46,172.16.255.254,12h"
+dnsmasq_dhcp_macs:
+- "set:apu,00:de:ad:be:ef:42"
+- "set:ap,68:de:ad:be:ef:01"
+- "set:ap,68:de:ad:be:ef:02"
+- "set:ap,68:de:ad:be:ef:03"
+- "set:ap,68:de:ad:be:ef:04"
+- "set:sw,ec:de:ad:be:ef:69"
+dnsmasq_dhcp_hosts:
+- "00:de:ad:be:ef:42,apu3,172.16.200.1,24h"
+- "68:de:ad:be:ef:01,ap01,172.16.200.101,24h"
+- "68:de:ad:be:ef:02,ap02,172.16.200.102,24h"
+- "68:de:ad:be:ef:03,ap03,172.16.200.103,24h"
+- "68:de:ad:be:ef:04,ap04,172.16.200.104,24h"
+- "ec:de:ad:be:ef:69,switch,172.16.200.254,24h"
+dnsmasq_dhcp_exclusive: false
