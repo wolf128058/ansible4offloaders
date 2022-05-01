@@ -17,6 +17,13 @@
   roles:
     - cli-tools
 
+- name: Dnsmasq
+  hosts: offloader
+  tags:
+    - dnsmasq
+  roles:
+    - dnsmasq
+
 - name: Install Docker and Unifi Controller
   hosts: offloader
   tags:

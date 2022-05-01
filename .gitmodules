@@ -19,3 +19,6 @@
 [submodule "roles/batman"]
 	path = roles/batman
 	url = git@github.com:wolf128058/role_ffoff-batman.git
+[submodule "roles/dnsmasq"]
+	path = roles/dnsmasq
+	url = git@github.com:ffbsee/ansible-role-dnsmasq.git
