@@ -5,6 +5,7 @@
     - ssh
     - sshd
     - ssh-keys
+    - ssh-authorized-keys
   roles:
     - ssh-authorized-keys
 
@@ -29,6 +30,7 @@
   tags:
     - docker
     - unifi
+    - docker-unifi
   roles:
     - docker-unifi
 
@@ -42,6 +44,7 @@
 - name: Install WireGuard and connect to FFMUC
   hosts: offloader
   tags:
+    - wg-ffmuc
     - wireguard
   roles:
     - wg-ffmuc
@@ -50,6 +53,7 @@
   hosts: offloader
   tags:
     - vxlan
+    - vxlan-ffmuc
   roles:
     - vxlan-ffmuc
 
