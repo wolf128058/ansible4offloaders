@@ -61,3 +61,9 @@
   roles:
     - respondd
 
+- name: Install Unifi-Respondd
+  hosts: offloader
+  tags:
+    - unifi-respondd
+  roles:
+    - unifi-respondd

@@ -22,3 +22,6 @@
 [submodule "roles/dnsmasq"]
 	path = roles/dnsmasq
 	url = git@github.com:ffbsee/ansible-role-dnsmasq.git
+[submodule "roles/unifi-respondd"]
+	path = roles/unifi-respondd
+	url = git@github.com:wolf128058/role_ffoff-unifi-respondd.git
