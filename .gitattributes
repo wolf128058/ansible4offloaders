@@ -1,0 +1,2 @@
+host_vars/*.yml filter=git-crypt diff=git-crypt
+host_vars/*.example.yml !filter !diff
