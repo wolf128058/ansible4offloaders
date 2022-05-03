@@ -23,3 +23,7 @@ dnsmasq_dhcp_exclusive: false
 unifi_respondd_controller_user: 'ffbsee'
 unifi_respondd_controller_password: 'GETYOURSELFASAFEPASSWORD'
 unifi_respondd_controller_verifyssl: 'False'
+unifi_respondd_unicast_address: 'fe80::f000:25ff:fe10:0'
+unifi_respondd_unicast_port: 45124
+unifi_respondd_offloader_name: 'MyOwnUploader'
+unifi_respondd_offloader_mac: '00:ba:be:04:20:42'
