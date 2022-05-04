@@ -1,27 +1,35 @@
 [submodule "roles/cli-tools"]
 	path = roles/cli-tools
 	url = git@github.com:wolf128058/role_ffoff-clitools.git
+	branch = main
 [submodule "roles/ssh-pubkeys"]
 	path = roles/ssh-authorized-keys
 	url = git@github.com:wolf128058/role_ffoff-pubkeydrop-singleuser
+	branch = main
 [submodule "roles/docker-unifi"]
 	path = roles/docker-unifi
 	url = git@github.com:wolf128058/role_ffoff-unifi-controller-docker.git
+	branch = main
 [submodule "roles/wg-ffmuc"]
 	path = roles/wg-ffmuc
 	url = git@github.com:wolf128058/role_ffoff-wg4ffmuc.git
+	branch = main
 [submodule "roles/vxlan-ffmuc"]
 	path = roles/vxlan-ffmuc
 	url = git@github.com:wolf128058/role_ffoff-vxlan4ffmuc.git
+	branch = main
 [submodule "roles/respondd"]
 	path = roles/respondd
 	url = git@github.com:wolf128058/role_ffoff-respondd.git
+	branch = main
 [submodule "roles/dnsmasq"]
 	path = roles/dnsmasq
 	url = git@github.com:ffbsee/ansible-role-dnsmasq.git
+	branch = main
 [submodule "roles/unifi-respondd"]
 	path = roles/unifi-respondd
 	url = git@github.com:wolf128058/role_ffoff-unifi-respondd.git
+	branch = main
 [submodule "roles/batman"]
 	path = roles/batman
 	url = git@github.com:wolf128058/role_ffoff-batman.git
