@@ -1,0 +1,18 @@
+---
+bandwidth_monitor_version_strategy: 'fixed'
+bandwidth_monitor_version: 'v0.0.36'
+bandwidth_monitor_release_api_url: 'https://api.github.com/repos/awlx/bandwidth-monitor/releases/latest'
+bandwidth_monitor_release_fallback_tag: 'v0.0.36'
+bandwidth_monitor_deb_arch: 'amd64'
+bandwidth_monitor_listen: '192.168.178.32:8088'
+bandwidth_monitor_listen_protocol: 'http'
+bandwidth_monitor_interfaces: ''
+bandwidth_monitor_promiscuous: 'true'
+bandwidth_monitor_wan_interface: ''
+bandwidth_monitor_geo_city: 'GeoLite2-City.mmdb'
+bandwidth_monitor_geo_asn: 'GeoLite2-ASN.mmdb'
+
+## UniFi integration
+bandwidth_monitor_unifi_url: ''
+bandwidth_monitor_unifi_user: ''
+bandwidth_monitor_unifi_pass: ''

@@ -71,3 +71,11 @@
     - unifi-respondd
   roles:
     - unifi-respondd
+
+- name: Install Bandwidth Monitor
+  hosts: offloader
+  tags:
+    - bandwidth-monitor
+    - bwm
+  roles:
+    - bandwidth-monitor
