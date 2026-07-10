@@ -1,0 +1,100 @@
+---
+- name: Resolve latest bandwidth-monitor release tag
+  when: bandwidth_monitor_version_strategy in ['latest', 'release']
+  block:
+    - name: Lookup latest bandwidth-monitor release
+      delegate_to: localhost
+      become: no
+      run_once: true
+      uri:
+        url: "{{ bandwidth_monitor_release_api_url }}"
+        return_content: true
+      register: bandwidth_monitor_latest_release
+
+    - name: Set resolved version from latest release
+      run_once: true
+      set_fact:
+        bandwidth_monitor_resolved_version: "{{ bandwidth_monitor_latest_release.json.tag_name }}"
+      when: bandwidth_monitor_latest_release is succeeded
+  rescue:
+    - name: Fall back to known release tag when release lookup fails
+      run_once: true
+      set_fact:
+        bandwidth_monitor_resolved_version: "{{ bandwidth_monitor_release_fallback_tag }}"
+
+- name: Use explicitly requested bandwidth-monitor version
+  run_once: true
+  set_fact:
+    bandwidth_monitor_resolved_version: "{{ bandwidth_monitor_version }}"
+  when: bandwidth_monitor_version_strategy == 'fixed'
+
+- name: Assert bandwidth-monitor version configuration is valid
+  run_once: true
+  assert:
+    that:
+      - bandwidth_monitor_version_strategy in ['latest', 'release', 'fixed']
+      - bandwidth_monitor_resolved_version is defined
+      - bandwidth_monitor_resolved_version | length > 0
+    fail_msg: >-
+      Invalid bandwidth_monitor version configuration.
+      Use strategy 'latest', 'release', or 'fixed'.
+      When using 'fixed', set bandwidth_monitor_version to a tag (e.g. v0.0.30).
+
+- name: Compute deb download URL and version number
+  run_once: true
+  set_fact:
+    bandwidth_monitor_deb_url: "https://github.com/awlx/bandwidth-monitor/releases/download/{{ bandwidth_monitor_resolved_version }}/bandwidth-monitor_{{ bandwidth_monitor_resolved_version | regex_replace('^v', '') }}_{{ bandwidth_monitor_deb_arch }}.deb"
+    bandwidth_monitor_version_number: "{{ bandwidth_monitor_resolved_version | regex_replace('^v', '') }}"
+
+- name: Download bandwidth-monitor .deb package
+  become: yes
+  get_url:
+    url: "{{ bandwidth_monitor_deb_url }}"
+    dest: "/tmp/bandwidth-monitor_{{ bandwidth_monitor_version_number }}_{{ bandwidth_monitor_deb_arch }}.deb"
+    mode: '0644'
+
+- name: Install bandwidth-monitor .deb package
+  become: yes
+  apt:
+    deb: "/tmp/bandwidth-monitor_{{ bandwidth_monitor_version_number }}_{{ bandwidth_monitor_deb_arch }}.deb"
+    state: present
+
+- name: Remove downloaded .deb file
+  become: yes
+  file:
+    path: "/tmp/bandwidth-monitor_{{ bandwidth_monitor_version_number }}_{{ bandwidth_monitor_deb_arch }}.deb"
+    state: absent
+
+- name: Remove OpenRC init script (not needed on Debian with systemd)
+  become: yes
+  file:
+    path: /etc/init.d/bandwidth-monitor
+    state: absent
+  notify: Restart bandwidth-monitor
+
+- name: Create bandwidth-monitor configuration directory
+  become: yes
+  file:
+    path: /etc/bandwidth-monitor
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy bandwidth-monitor environment config
+  become: yes
+  template:
+    src: bandwidth-monitor.env.j2
+    dest: /etc/bandwidth-monitor/env
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart bandwidth-monitor
+
+- name: Ensure bandwidth-monitor is enabled and running
+  become: yes
+  systemd:
+    name: bandwidth-monitor
+    daemon_reload: yes
+    enabled: yes
+    state: started

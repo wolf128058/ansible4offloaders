@@ -1,0 +1,8 @@
+---
+- name: Restart bandwidth-monitor
+  become: yes
+  systemd:
+    name: bandwidth-monitor
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

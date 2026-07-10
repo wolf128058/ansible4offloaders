@@ -72,6 +72,14 @@
   roles:
     - unifi-respondd
 
+- name: Install Bandwidth Monitor
+  hosts: offloader
+  tags:
+    - bandwidth-monitor
+    - bwm
+  roles:
+    - bandwidth-monitor
+
 # Opt-in only (tagged never inside the role, deliberately no play tag):
 #   --tags updates-check  list pending updates
 #   --tags updates-apply  install everything that needs no reboot
