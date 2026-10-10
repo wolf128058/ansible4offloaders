@@ -71,3 +71,12 @@
     - unifi-respondd
   roles:
     - unifi-respondd
+
+# Opt-in only (tagged never inside the role, deliberately no play tag):
+#   --tags updates-check  list pending updates
+#   --tags updates-apply  install everything that needs no reboot
+- name: System Updates
+  hosts: offloader
+  gather_facts: false
+  roles:
+    - system-updates
