@@ -1,0 +1,26 @@
+// {{ ansible_managed }}
+// Extends 50unattended-upgrades: lists are appended, scalars overridden.
+// Held packages (and anything whose new version needs them) are never
+// upgraded here; they wait for `ansible-playbook offloader.yml --tags updates-apply`.
+
+Unattended-Upgrade::Allowed-Origins {
+{% for origin in autoupdate_allowed_origins %}
+	"{{ origin }}";
+{% endfor %}
+};
+
+Unattended-Upgrade::Package-Blacklist {
+{% for pattern in autoupdate_hold_patterns + autoupdate_extra_hold_patterns %}
+	"{{ pattern }}";
+{% endfor %}
+};
+
+// Packages that would ask about a changed config file are skipped by
+// unattended-upgrades on their own, so templated configs stay untouched.
+
+Unattended-Upgrade::Automatic-Reboot "{{ autoupdate_automatic_reboot | bool | lower }}";
+Unattended-Upgrade::MinimalSteps "true";
+Unattended-Upgrade::Remove-New-Unused-Dependencies "false";
+Unattended-Upgrade::Remove-Unused-Dependencies "false";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "false";
+Unattended-Upgrade::SyslogEnable "true";

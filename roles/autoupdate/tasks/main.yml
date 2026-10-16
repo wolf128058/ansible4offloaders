@@ -1,0 +1,92 @@
+---
+# Uncritical package updates are installed by Ubuntu's own
+# unattended-upgrades (apt-daily-upgrade.timer). This role widens it from
+# security-only to all regular updates and keeps everything in the hold
+# lists out, so kernel, DKMS, systemd and the mesh/network stack stay with
+# the supervised `--tags updates-apply` run.
+- name: Install unattended-upgrades
+  become: yes
+  apt:
+    name: unattended-upgrades
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Enable periodic list updates and unattended upgrades
+  become: yes
+  template:
+    src: 21offloader-autoupdate.j2
+    dest: /etc/apt/apt.conf.d/21offloader-autoupdate
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Configure origins and held packages for unattended-upgrades
+  become: yes
+  template:
+    src: 52offloader-unattended-upgrades.j2
+    dest: /etc/apt/apt.conf.d/52offloader-unattended-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Create drop-in directories for apt-daily-upgrade
+  become: yes
+  file:
+    path: "/etc/systemd/system/{{ item }}.d"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - apt-daily-upgrade.timer
+    - apt-daily-upgrade.service
+
+- name: Set schedule of apt-daily-upgrade.timer
+  become: yes
+  template:
+    src: apt-daily-upgrade.timer.conf.j2
+    dest: /etc/systemd/system/apt-daily-upgrade.timer.d/offloader-autoupdate.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart apt-daily-upgrade.timer
+
+- name: Set needrestart mode for unattended upgrades
+  become: yes
+  template:
+    src: apt-daily-upgrade.service.conf.j2
+    dest: /etc/systemd/system/apt-daily-upgrade.service.d/offloader-autoupdate.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Enable apt timers
+  become: yes
+  systemd:
+    name: "{{ item }}"
+    daemon_reload: yes
+    enabled: yes
+    state: started
+  loop:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+
+# A full `unattended-upgrade --dry-run` takes more than 20 minutes on the
+# APU, so only check that apt picked up the configuration.
+- name: Read effective unattended-upgrades configuration
+  command: apt-config dump
+  register: autoupdate_apt_config
+  changed_when: false
+  check_mode: false
+
+- name: Check that hold patterns and origins are active
+  assert:
+    that:
+      - ('APT::Periodic::Unattended-Upgrade "' ~ ('1' if autoupdate_enabled | bool else '0') ~ '"') in autoupdate_apt_config.stdout
+      - (autoupdate_hold_patterns + autoupdate_extra_hold_patterns)
+        | reject('in', autoupdate_apt_config.stdout) | list | length == 0
+      - autoupdate_allowed_origins | reject('in', autoupdate_apt_config.stdout) | list | length == 0
+    quiet: true
+  when: not ansible_check_mode

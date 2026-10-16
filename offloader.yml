@@ -80,6 +80,14 @@
   roles:
     - bandwidth-monitor
 
+- name: Unattended Upgrades (uncritical packages only)
+  hosts: offloader
+  tags:
+    - autoupdate
+    - unattended-upgrades
+  roles:
+    - autoupdate
+
 # Opt-in only (tagged never inside the role, deliberately no play tag):
 #   --tags updates-check  list pending updates
 #   --tags updates-apply  install everything that needs no reboot

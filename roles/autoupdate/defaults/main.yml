@@ -1,0 +1,59 @@
+---
+# Unattended upgrades for uncritical packages (counterpart of the opt-in
+# system-updates role, but running on the host by itself).
+# Everything matching autoupdate_hold_patterns or
+# autoupdate_extra_hold_patterns is never upgraded automatically, nor is
+# anything whose new version needs one of them; those stay for
+# `--tags updates-apply` or a planned maintenance window with reboot.
+autoupdate_enabled: true
+
+# When apt-daily-upgrade.timer installs updates (systemd OnCalendar). Night,
+# so a restarting service does not hit events in the church.
+autoupdate_schedule: "*-*-* 04:00"
+autoupdate_randomized_delay: "30min"
+
+# Repositories updates are taken from, appended to the distribution
+# defaults in 50unattended-upgrades (release, -security, ESM).
+# ${distro_id}/${distro_codename} are expanded by unattended-upgrades.
+autoupdate_allowed_origins:
+  - "${distro_id}:${distro_codename}-updates"
+
+# Packages that only take full effect after a reboot (kernel, firmware,
+# DKMS, microcode, libc, init system). Python regexes matched from the start
+# of the package name. Same list as system_updates_reboot_patterns.
+autoupdate_hold_patterns:
+  - '^linux-(image|headers|modules|generic|virtual|signed|firmware|base|raspi)'
+  - '^firmware-'
+  - '^(intel|amd64)-microcode$'
+  - '.*-dkms$'         # re.match anchors at the start
+  - '^initramfs-tools'
+  - '^libc6$'
+  - '^libc-bin$'
+  - '^systemd'
+  - '^libsystemd'
+  - '^udev$'
+  - '^libudev'
+  - '^dbus'
+  - '^libdbus'
+
+# Offloader specifics: packages whose upgrade restarts or rebuilds part of
+# the mesh / client network. An unattended failure there takes the whole
+# site offline, so they wait for a supervised updates-apply run.
+autoupdate_extra_hold_patterns:
+  - '^dkms$'               # rebuilds batman-adv
+  - '^wireguard'           # mesh-vpn uplink to FFMUC
+  - '^iproute2$'           # vxlan, bridge, batman interfaces
+  - '^bridge-utils$'
+  - '^netplan'
+  - '^ifupdown'
+  - '^dnsmasq'             # DHCP/DNS for the clients
+  - '^docker'              # daemon restart stops the UniFi controller
+  - '^containerd'
+  - '^runc$'
+
+# Never reboot automatically; a pending reboot shows up in updates-check.
+autoupdate_automatic_reboot: false
+
+# needrestart after unattended upgrades: "l" only lists services running on
+# outdated libraries (like updates-apply), "a" restarts them automatically.
+autoupdate_needrestart_mode: "l"

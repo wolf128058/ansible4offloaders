@@ -25,7 +25,7 @@
 
 ## Target Host
 
-- The offloader (apu3faltigkeit) runs **Debian on amd64**. When adding `.deb` packages or kernel modules, always use `amd64` architecture.
+- The offloader (apu3faltigkeit) runs **Ubuntu 24.04 LTS (noble) on amd64**, kernel `linux-generic`. When adding `.deb` packages or kernel modules, always use `amd64` architecture; apt repos (e.g. Docker) use the `ubuntu` path and `noble` codename.
 - Network interfaces: `enp1s0` (WAN), `enp2s0` (LAN), `lo` (loopback). Bridge and VPN interfaces are created dynamically by the batman/wg/vxlan roles.
 
 ## GitHub Releases Pattern
@@ -73,6 +73,8 @@ For `.deb` packages (e.g. `bandwidth-monitor`), the pattern is: download via `ge
 | `respondd` | git submodule | git clone + templates |
 | `unifi-respondd` | git submodule | git clone + templates |
 | `bandwidth-monitor` | local (not submodule) | `.deb` from GitHub Releases + template |
+| `system-updates` | local (not submodule) | opt-in apt report / reboot-free upgrade |
+| `autoupdate` | local (not submodule) | unattended-upgrades config + timer drop-ins |
 
 ## Running the Playbook
 

@@ -1,0 +1,6 @@
+// {{ ansible_managed }}
+// Overrides 20auto-upgrades (later file wins for these scalar values).
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
+APT::Periodic::Unattended-Upgrade "{{ '1' if autoupdate_enabled | bool else '0' }}";
