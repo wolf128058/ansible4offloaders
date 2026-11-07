@@ -219,3 +219,8 @@ bandwidth_monitor_unifi_pass: !vault |
   3735323263363634620a306234643864666534353037366137313063666466333633653632363832
   64383331316439336336633263623431363631333438646637613837623064386431616433666132
   3461346535393262616664306334376536646330383839613531
+# UniFi-Ports nur im LAN anbieten: enp2s0 (AP-Netz) und enp1s0 (FritzBox-Netz).
+# Freifunk-Interfaces (br-welt, wg-welt, mesh-vpn) und IPv6 bleiben außen vor.
+unifi_docker_bind_addresses:
+  - "{{ ansible_facts['enp2s0']['ipv4']['address'] }}"
+  - "{{ ansible_facts['enp1s0']['ipv4']['address'] }}"
