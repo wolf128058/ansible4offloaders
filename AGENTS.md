@@ -75,6 +75,7 @@ For `.deb` packages (e.g. `bandwidth-monitor`), the pattern is: download via `ge
 | `bandwidth-monitor` | local (not submodule) | `.deb` from GitHub Releases + template |
 | `system-updates` | local (not submodule) | opt-in apt report / reboot-free upgrade |
 | `autoupdate` | local (not submodule) | unattended-upgrades config + timer drop-ins |
+| `hardening` | local (not submodule) | own nftables table via systemd unit + sshd drop-in |
 
 ## Running the Playbook
 

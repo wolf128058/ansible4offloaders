@@ -1,0 +1,54 @@
+---
+# Host hardening: a small nftables table of our own (independent of Docker's
+# rules) and key-only SSH login.
+- name: Install nftables
+  become: yes
+  apt:
+    name: nftables
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Deploy offloader nftables rules
+  become: yes
+  copy:
+    src: offloader-firewall.nft
+    dest: /etc/offloader-firewall.nft
+    owner: root
+    group: root
+    mode: "0644"
+    validate: /usr/sbin/nft -c -f %s
+  notify: Restart offloader-firewall
+
+- name: Deploy offloader-firewall systemd unit
+  become: yes
+  copy:
+    src: offloader-firewall.service
+    dest: /etc/systemd/system/offloader-firewall.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart offloader-firewall
+
+- name: Ensure offloader-firewall is enabled and active
+  become: yes
+  systemd:
+    name: offloader-firewall
+    daemon_reload: yes
+    enabled: yes
+    state: started
+
+- name: Disable SSH password login
+  become: yes
+  copy:
+    src: 10-offloader-hardening.conf
+    dest: /etc/ssh/sshd_config.d/10-offloader-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload ssh
+
+- name: Validate sshd configuration
+  become: yes
+  command: /usr/sbin/sshd -t
+  changed_when: false

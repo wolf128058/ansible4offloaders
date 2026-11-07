@@ -1,0 +1,15 @@
+#!/usr/sbin/nft -f
+# Managed by Ansible (role hardening). Own table, so Docker's iptables-nft
+# rules stay untouched; the empty create + delete makes reloads idempotent.
+table inet offloader
+delete table inet offloader
+
+table inet offloader {
+	chain prerouting_raw {
+		type filter hook prerouting priority raw; policy accept;
+		# Legitimate traffic carries no IPv4 options. Dropping them keeps
+		# option-handling bugs in the TCP stack unreachable
+		# (CVE-2026-98432: use-after-free of inet_opt/ireq_opt).
+		meta nfproto ipv4 ip hdrlength != 5 counter drop comment "IPv4 options"
+	}
+}

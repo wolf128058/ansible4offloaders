@@ -1,0 +1,14 @@
+---
+- name: Restart offloader-firewall
+  become: yes
+  systemd:
+    name: offloader-firewall
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+
+- name: Reload ssh
+  become: yes
+  systemd:
+    name: ssh
+    state: reloaded
